@@ -46,7 +46,7 @@ module Sandbox
         end
 
         fname = "#{SCRIPTS_DIR}/#{script}.rb"
-        unless File.exists?(fname)
+        unless File.exist?(fname)
           @shell.puts("#{cmd}: No such script")
           return
         end
