@@ -18,8 +18,8 @@ class Missions < Sandbox::Script
       return
     end
 
-    @shell.puts("Missions log for #{id}")
-    @shell.puts(
+    @shell.custom_puts("Missions log for #{id}")
+    @shell.custom_puts(
       "  %-1s %-7s %-7s %-8s %-20s" % [
         "",
         "ID",
@@ -38,7 +38,7 @@ class Missions < Sandbox::Script
         when Trickster::Hackers::Game::MISSION_REJECTED
          status = "\e[31m\u2691\e[0m"
       end
-      @shell.puts(
+      @shell.custom_puts(
         "  %-1s %-7d %-7d %-8d %-20s" % [
           status,
           k,

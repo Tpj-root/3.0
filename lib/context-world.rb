@@ -19,7 +19,7 @@ module Sandbox
 
       when "targets", "bonuses", "goals"
         if @game.sid.empty?
-          @shell.puts("#{cmd}: No session ID")
+          @shell.custom_puts("#{cmd}: No session ID")
           return
         end
 
@@ -44,8 +44,8 @@ module Sandbox
         case cmd
 
         when "targets"
-          @shell.puts("\e[1;35m\u2022 Targets\e[0m")
-          @shell.puts(
+          @shell.custom_puts("\e[1;35m\u2022 Targets\e[0m")
+          @shell.custom_puts(
             "  \e[35m%-12s %-6s %-8s %-8s %-8s %s\e[0m" % [
               "ID",
               "Level",
@@ -56,7 +56,7 @@ module Sandbox
             ]
           )
           world["targets"].each do |k, v|
-            @shell.puts(
+            @shell.custom_puts(
               "  %-12d %-6d %+-8d %+-8d %-8d %s" % [
                 k,
                 @game.getLevelByExp(v["experience"]),
@@ -70,15 +70,15 @@ module Sandbox
           return
 
         when "bonuses"
-          @shell.puts("\e[1;35m\u2022 Bonuses\e[0m")
-          @shell.puts(
+          @shell.custom_puts("\e[1;35m\u2022 Bonuses\e[0m")
+          @shell.custom_puts(
             "  \e[35m%-12s %-2s\e[0m" % [
               "ID",
               "Amount",
             ]
           )
           world["bonuses"].each do |k, v|
-            @shell.puts(
+            @shell.custom_puts(
               "  %-12d %-2d" % [
                 k,
                 v["amount"],
@@ -88,8 +88,8 @@ module Sandbox
           return
 
         when "goals"
-          @shell.puts("\e[1;35m\u2022 Goals\e[0m")
-          @shell.puts(
+          @shell.custom_puts("\e[1;35m\u2022 Goals\e[0m")
+          @shell.custom_puts(
             "  \e[35m%-12s %-7s %-8s %-4s %s\e[0m" % [
               "ID",
               "Credits",
@@ -99,7 +99,7 @@ module Sandbox
             ]
           )
           world["goals"].each do |id, goal|
-            @shell.puts(
+            @shell.custom_puts(
               "  %-12d %-7d %-8d %-4d %s" % [
                 id,
                 @game.goalsTypes[goal["type"]]["credits"],
@@ -115,7 +115,7 @@ module Sandbox
 
       when "new"
         if @game.sid.empty?
-          @shell.puts("#{cmd}: No session ID")
+          @shell.custom_puts("#{cmd}: No session ID")
           return
         end
 
@@ -127,8 +127,8 @@ module Sandbox
           return
         end
         @shell.logger.log(msg)
-        @shell.puts("\e[1;35m\u2022 Targets\e[0m")
-        @shell.puts(
+        @shell.custom_puts("\e[1;35m\u2022 Targets\e[0m")
+        @shell.custom_puts(
           "  \e[35m%-12s %-6s %-8s %-8s %-8s %s\e[0m" % [
             "ID",
             "Level",
@@ -139,7 +139,7 @@ module Sandbox
           ]
         )
         targets["targets"].each do |k, v|
-          @shell.puts(
+          @shell.custom_puts(
             "  %-12d %-6d %+-8d %+-8d %-8d %s" % [
               k,
               @game.getLevelByExp(v["experience"]),
@@ -154,12 +154,12 @@ module Sandbox
 
       when "collect"
         if @game.sid.empty?
-          @shell.puts("#{cmd}: No session ID")
+          @shell.custom_puts("#{cmd}: No session ID")
           return
         end
 
         if words[1].nil?
-          @shell.puts("#{cmd}: Specify bonus ID")
+          @shell.custom_puts("#{cmd}: Specify bonus ID")
           return
         end
         id = words[1].to_i
@@ -176,18 +176,18 @@ module Sandbox
 
       when "update"
         if @game.sid.empty?
-          @shell.puts("#{cmd}: No session ID")
+          @shell.custom_puts("#{cmd}: No session ID")
           return
         end
 
         if words[1].nil?
-          @shell.puts("#{cmd}: Specify goal ID")
+          @shell.custom_puts("#{cmd}: Specify goal ID")
           return
         end
         id = words[1].to_i
         
         if words[2].nil?
-          @shell.puts("#{cmd}: Specify record")
+          @shell.custom_puts("#{cmd}: Specify record")
           return
         end
         record = words[2].to_i
@@ -204,12 +204,12 @@ module Sandbox
 
       when "reject"
         if @game.sid.empty?
-          @shell.puts("#{cmd}: No session ID")
+          @shell.custom_puts("#{cmd}: No session ID")
           return
         end
 
         if words[1].nil?
-          @shell.puts("#{cmd}: Specify goal ID")
+          @shell.custom_puts("#{cmd}: Specify goal ID")
           return
         end
         id = words[1].to_i

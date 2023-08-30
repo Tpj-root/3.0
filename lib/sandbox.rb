@@ -2,6 +2,7 @@ require "readline"
 require "thread"
 require "json"
 require "base64"
+#require "colorize"
     
 require "context"
 require "context-root"
@@ -51,12 +52,28 @@ module Sandbox
       @game.countriesList = Config.new("#{DATA_DIR}/countries.conf")
       @game.countriesList.load
     end
-
-    def puts(data = "")
-      $stdout.puts("\e[0G\e[J#{data}")
-      Readline.refresh_line if @reading
+#######################################
+## OLD
+    # def puts(data = "")
+    #   $stdout.puts("\e[0G\e[J#{data}")
+    #   Readline.refresh_line if @reading
+    # end
+#######################################
+# This code was modified by Arr0nst0n3 from India
+# 1.0
+# Under windows 11 testing process
+# 
+    def custom_puts(data = "")
+      if RUBY_PLATFORM =~ /win32|win64|\.NET|windows|cygwin|mingw32/i
+        # Windows platform
+        puts(data)
+      else
+        # Unix-like platform
+        $stdout.puts("\e[0G\e[J#{data}".colorize(:default))
+        Readline.refresh_line if @reading
+      end
     end
-
+#######################################
     def readline
       loop do
         prompt = "#{@context} \e[1;35m\u25b8\e[0m "
@@ -113,15 +130,15 @@ module Sandbox
     end
 
     def log(message)
-      @shell.puts(@logPrefix + message.to_s + @logSuffix)
+      @shell.custom_puts(@logPrefix + message.to_s + @logSuffix)
     end
 
     def error(message)
-      @shell.puts(@errorPrefix + message.to_s + @errorSuffix)
+      @shell.custom_puts(@errorPrefix + message.to_s + @errorSuffix)
     end
 
     def info(message)
-      @shell.puts(@infoPrefix + message.to_s + @infoSuffix)
+      @shell.custom_puts(@infoPrefix + message.to_s + @infoSuffix)
     end
   end
 

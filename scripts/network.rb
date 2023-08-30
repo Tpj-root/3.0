@@ -18,8 +18,8 @@ class Network < Sandbox::Script
       return
     end
 
-    @shell.puts("\u2022 Network structure for #{net["profile"].name}")
-    @shell.puts(
+    @shell.custom_puts("\u2022 Network structure for #{net["profile"].name}")
+    @shell.custom_puts(
       "  %-5s %-12s %-12s %-5s %-4s %-4s %-4s %s" % [
         "Index",
         "ID",
@@ -34,7 +34,7 @@ class Network < Sandbox::Script
     net["net"].each_index do |i|
       id = net["net"][i]["id"]
       type = net["nodes"][id]["type"]
-      @shell.puts(
+      @shell.custom_puts(
         "  %-5d %-12d %-12s %-5d %-+4d %-+4d %-+4d %s" % [
           i,
           id,

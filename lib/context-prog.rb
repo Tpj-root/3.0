@@ -21,7 +21,7 @@ module Sandbox
 
       when "list", "queue"
         if @game.sid.empty?
-          @shell.puts("#{cmd}: No session ID")
+          @shell.custom_puts("#{cmd}: No session ID")
           return
         end
 
@@ -37,8 +37,8 @@ module Sandbox
         case cmd
 
         when "list"
-          @shell.puts("\e[1;35m\u2022 Programs\e[0m")
-          @shell.puts(
+          @shell.custom_puts("\e[1;35m\u2022 Programs\e[0m")
+          @shell.custom_puts(
             "  \e[35m%-12s %-12s %-4s %-6s %-5s %-12s\e[0m" % [
               "ID",
               "Name",
@@ -53,7 +53,7 @@ module Sandbox
             if v["timer"].negative?
               timer = @game.timerToDHMS(v["timer"] * -1)
             end
-            @shell.puts(
+            @shell.custom_puts(
               "  %-12d %-12s %-4d %-6d %-5d %-12s" % [
                 k,
                 @game.programTypes[v["type"]]["name"],
@@ -67,8 +67,8 @@ module Sandbox
           return
 
         when "queue"
-          @shell.puts("\e[1;35m\u2022 Programs queue\e[0m")
-          @shell.puts(
+          @shell.custom_puts("\e[1;35m\u2022 Programs queue\e[0m")
+          @shell.custom_puts(
             "  \e[35m%-12s %-4s %-6s %-5s\e[0m" % [
               "Name",
               "Type",
@@ -82,7 +82,7 @@ module Sandbox
             id, program = net["programs"].detect {|k, v| v["type"] == queue["type"]}
             compile = @game.programTypes[queue["type"]]["levels"][program["level"]]["compile"]
             total += queue["amount"] * compile - queue["timer"]
-            @shell.puts(
+            @shell.custom_puts(
               "  %-12s %-4d %-6d %-5d" % [
                 @game.programTypes[queue["type"]]["name"],
                 queue["type"],
@@ -91,10 +91,10 @@ module Sandbox
               ]
             )
           end
-          @shell.puts
-          @shell.puts("  \e[35mSequence: #{@game.syncSeq}\e[0m")
+          @shell.custom_puts
+          @shell.custom_puts("  \e[35mSequence: #{@game.syncSeq}\e[0m")
           unless total.zero?
-            @shell.puts("  \e[35mTotal: #{@game.timerToDHMS(total)}\e[0m")
+            @shell.custom_puts("  \e[35mTotal: #{@game.timerToDHMS(total)}\e[0m")
           end
           return
 
@@ -102,12 +102,12 @@ module Sandbox
 
       when "sync"
         if @game.sid.empty?
-          @shell.puts("#{cmd}: No session ID")
+          @shell.custom_puts("#{cmd}: No session ID")
           return
         end
 
         if words.length < 2
-          @shell.puts("#{cmd}: Specify queue data")
+          @shell.custom_puts("#{cmd}: Specify queue data")
           return
         end
 
@@ -116,7 +116,7 @@ module Sandbox
         words[1..-1].each do |data|
           data = data.split(",")
           if data.length != 2
-            @shell.puts("#{cmd}: Invalid queue data")
+            @shell.custom_puts("#{cmd}: Invalid queue data")
             return
           end
           programs[data[0].to_i] = data[1].to_i
@@ -130,8 +130,8 @@ module Sandbox
         end
         @shell.logger.log(msg)
 
-        @shell.puts("\e[1;35m\u2022 Programs queue\e[0m")
-        @shell.puts(
+        @shell.custom_puts("\e[1;35m\u2022 Programs queue\e[0m")
+        @shell.custom_puts(
           "  \e[35m%-12s %-4s %-6s %-5s\e[0m" % [
             "Name",
             "Type",
@@ -145,7 +145,7 @@ module Sandbox
             id, program = sync["programs"].detect {|k, v| v["type"] == queue["type"]}
             compile = @game.programTypes[queue["type"]]["levels"][program["level"]]["compile"]
             total += queue["amount"] * compile - queue["timer"]
-          @shell.puts(
+          @shell.custom_puts(
             "  %-12s %-4d %-6d %-5d" % [
               @game.programTypes[queue["type"]]["name"],
               queue["type"],
@@ -154,21 +154,21 @@ module Sandbox
             ]
           )
         end
-        @shell.puts
-        @shell.puts("  \e[35mSequence: #{@game.syncSeq}\e[0m")
+        @shell.custom_puts
+        @shell.custom_puts("  \e[35mSequence: #{@game.syncSeq}\e[0m")
         unless total.zero?
-          @shell.puts("  \e[35mTotal: #{@game.timerToDHMS(total)}\e[0m")
+          @shell.custom_puts("  \e[35mTotal: #{@game.timerToDHMS(total)}\e[0m")
         end
         return
 
       when "create"
         if @game.sid.empty?
-          @shell.puts("#{cmd}: No session ID")
+          @shell.custom_puts("#{cmd}: No session ID")
           return
         end
 
         if words.length < 2
-          @shell.puts("#{cmd}: Specify program type")
+          @shell.custom_puts("#{cmd}: Specify program type")
           return
         end
 
@@ -185,12 +185,12 @@ module Sandbox
 
       when "upgrade"
         if @game.sid.empty?
-          @shell.puts("#{cmd}: No session ID")
+          @shell.custom_puts("#{cmd}: No session ID")
           return
         end
 
         if words.length < 2
-          @shell.puts("#{cmd}: Specify program type")
+          @shell.custom_puts("#{cmd}: Specify program type")
           return
         end
 
@@ -207,12 +207,12 @@ module Sandbox
 
       when "finish"
         if @game.sid.empty?
-          @shell.puts("#{cmd}: No session ID")
+          @shell.custom_puts("#{cmd}: No session ID")
           return
         end
 
         if words.length < 2
-          @shell.puts("#{cmd}: Specify program type")
+          @shell.custom_puts("#{cmd}: Specify program type")
           return
         end
 
@@ -229,12 +229,12 @@ module Sandbox
 
       when "edit"
         if @game.sid.empty?
-          @shell.puts("#{cmd}: No session ID")
+          @shell.custom_puts("#{cmd}: No session ID")
           return
         end
 
         if words.length < 2
-          @shell.puts("#{cmd}: Specify programs data")
+          @shell.custom_puts("#{cmd}: Specify programs data")
           return
         end
 
@@ -243,7 +243,7 @@ module Sandbox
         words[1..-1].each do |data|
           data = data.split(",")
           if data.length != 2
-            @shell.puts("#{cmd}: Invalid programs data")
+            @shell.custom_puts("#{cmd}: Invalid programs data")
             return
           end
           programs[data[0].to_i] = data[1].to_i
@@ -257,8 +257,8 @@ module Sandbox
         end
         @shell.logger.log(msg)
 
-        @shell.puts("\e[1;35m\u2022 Programs\e[0m")
-        @shell.puts(
+        @shell.custom_puts("\e[1;35m\u2022 Programs\e[0m")
+        @shell.custom_puts(
           "  \e[35m%-12s %-4s %-6s\e[0m" % [
             "Name",
             "Type",
@@ -266,7 +266,7 @@ module Sandbox
           ]
         )
         programs.each do |k, v|
-          @shell.puts(
+          @shell.custom_puts(
             "  %-12s %-4d %-6d" % [
               @game.programTypes[k]["name"],
               k,
@@ -278,12 +278,12 @@ module Sandbox
 
       when "revive"
         if @game.sid.empty?
-          @shell.puts("#{cmd}: No session ID")
+          @shell.custom_puts("#{cmd}: No session ID")
           return
         end
 
         if words[1].nil?
-          @shell.puts("#{cmd}: Specify AI program ID")
+          @shell.custom_puts("#{cmd}: Specify AI program ID")
           return
         end
 

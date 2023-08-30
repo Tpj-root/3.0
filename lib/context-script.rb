@@ -41,13 +41,13 @@ module Sandbox
       when "run"
         script = words[1]
         if script.nil?
-          @shell.puts("#{cmd}: Specify script name")
+          @shell.custom_puts("#{cmd}: Specify script name")
           return
         end
 
         fname = "#{SCRIPTS_DIR}/#{script}.rb"
         unless File.exist?(fname)
-          @shell.puts("#{cmd}: No such script")
+          @shell.custom_puts("#{cmd}: No such script")
           return
         end
 
@@ -63,37 +63,37 @@ module Sandbox
         end
 
         if scripts.empty?
-          @shell.puts("#{cmd}: No scripts")
+          @shell.custom_puts("#{cmd}: No scripts")
           return
         end
 
-        @shell.puts("Scripts:")
+        @shell.custom_puts("Scripts:")
         scripts.each do |script|
-          @shell.puts(" #{script}")
+          @shell.custom_puts(" #{script}")
         end
         return
 
       when "jobs"
         if @jobs.empty?
-          @shell.puts("#{cmd}: No active jobs")
+          @shell.custom_puts("#{cmd}: No active jobs")
           return
         end
 
-        @shell.puts("Active jobs:")
+        @shell.custom_puts("Active jobs:")
         @jobs.each do |k, v|
-          @shell.puts(" [%d] %s" % [k, v[:script]])
+          @shell.custom_puts(" [%d] %s" % [k, v[:script]])
         end
         return
 
       when "kill"
         if words[1].nil?
-          @shell.puts("#{cmd}: Specify job ID")
+          @shell.custom_puts("#{cmd}: Specify job ID")
           return
         end
 
         job = words[1].to_i
         unless @jobs.key?(job)
-          @shell.puts("#{cmd}: No such job")
+          @shell.custom_puts("#{cmd}: No such job")
           return
         end
 
@@ -108,22 +108,22 @@ module Sandbox
         
       when "admin"
         if words[1].nil?
-          @shell.puts("#{cmd}: Specify job ID")
+          @shell.custom_puts("#{cmd}: Specify job ID")
           return
         end
 
         job = words[1].to_i
         unless @jobs.key?(job)
-          @shell.puts("#{cmd}: No such job")
+          @shell.custom_puts("#{cmd}: No such job")
           return
         end
 
         unless @jobs[job][:instance].respond_to?(:admin)
-          @shell.puts("#{cmd}: Not implemented")
+          @shell.custom_puts("#{cmd}: Not implemented")
           return
         end
 
-        @shell.puts("Enter ! to quit")
+        @shell.custom_puts("Enter ! to quit")
         prompt = "\e[1;34m#{@jobs[job][:script]}:#{job} \u273f\e[0m "
         loop do
           @shell.reading = true
@@ -140,7 +140,7 @@ module Sandbox
           end
           msg = @jobs[job][:instance].admin(line)
           next if msg.nil? || msg.empty?
-          @shell.puts(msg)
+          @shell.custom_puts(msg)
         end
         return
 

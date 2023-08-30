@@ -25,9 +25,9 @@ module Sandbox
     end
 
     def help(commands)
-      @shell.puts "Available commands:"
+      @shell.custom_puts "Available commands:"
       commands.each do |k, v|
-        @shell.puts " %-28s%s" % [v[0], v[1]]
+        @shell.custom_puts " %-28s%s" % [v[0], v[1]]
       end
     end
     
@@ -46,7 +46,7 @@ module Sandbox
         return
 
       when "path"
-        @shell.puts "Current path #{@shell.context}"
+        @shell.custom_puts "Current path #{@shell.context}"
         return
           
       when "quit"
@@ -54,29 +54,29 @@ module Sandbox
 
       when "echo"
         if words[1].nil?
-          @shell.puts "#{cmd}: Specify variable name"
+          @shell.custom_puts "#{cmd}: Specify variable name"
           return
         end
 
         unless @game.config.key?(words[1])
-          @shell.puts "No such variable"
+          @shell.custom_puts "No such variable"
           return
         end
 
-        @shell.puts @game.config[words[1]]
+        @shell.custom_puts @game.config[words[1]]
         return
 
       when "set"
         if words[1].nil?
-          @shell.puts "Configuration:"
+          @shell.custom_puts "Configuration:"
           @game.config.each do |k, v|
-            @shell.puts " %-16s .. %s" % [k, v]
+            @shell.custom_puts " %-16s .. %s" % [k, v]
           end
           return
         end
 
         if words[2].nil?
-          @shell.puts "#{cmd}: Specify variable value"
+          @shell.custom_puts "#{cmd}: Specify variable value"
           return
         end
 
@@ -85,12 +85,12 @@ module Sandbox
 
       when "unset"
         if words[1].nil?
-          @shell.puts "#{cmd}: Specify variable name"
+          @shell.custom_puts "#{cmd}: Specify variable name"
           return
         end
 
         unless @game.config.key?(words[1])
-          @shell.puts "No such variable"
+          @shell.custom_puts "No such variable"
           return
         end
 
@@ -101,11 +101,11 @@ module Sandbox
         begin
           @game.config.save
         rescue => e
-          @shell.puts "#{cmd}: Can't save configuration (#{e})"
+          @shell.custom_puts "#{cmd}: Can't save configuration (#{e})"
         end
         
       else
-        @shell.puts "Unrecognized command #{cmd}"
+        @shell.custom_puts "Unrecognized command #{cmd}"
         return
           
       end

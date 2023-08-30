@@ -30,7 +30,7 @@ module Sandbox
            "remove", "nodes", "logs",
            "net"
         if @game.sid.empty?
-          @shell.puts("#{cmd}: No session ID")
+          @shell.custom_puts("#{cmd}: No session ID")
           return
         end
 
@@ -48,45 +48,45 @@ module Sandbox
         when "profile"
           builders = 0
           net["nodes"].each {|k, v| builders += v["builders"] if v["timer"].negative?}
-          @shell.puts("\e[1;35m\u2022 Profile\e[0m")
-          @shell.puts("  %-15s %d" % ["ID", net["profile"].id])
-          @shell.puts("  %-15s %s" % ["Name", net["profile"].name])
-          @shell.puts("  %-15s \e[33m$ %d\e[0m" % ["Money", net["profile"].money])
-          @shell.puts("  %-15s \e[31m\u20bf %d\e[0m" % ["Bitcoins", net["profile"].bitcoins])
-          @shell.puts("  %-15s %d" % ["Credits", net["profile"].credits])
-          @shell.puts("  %-15s %d" % ["Experience", net["profile"].experience])
-          @shell.puts("  %-15s %d" % ["Rank", net["profile"].rank])
-          @shell.puts("  %-15s %s" % ["Builders", "\e[32m" + "\u25b0" * builders + "\e[37m" + "\u25b1" * (net["profile"].builders - builders) + "\e[0m"])
-          @shell.puts("  %-15s %d" % ["X", net["profile"].x])
-          @shell.puts("  %-15s %d" % ["Y", net["profile"].y])
-          @shell.puts("  %-15s %d" % ["Country", net["profile"].country])
-          @shell.puts("  %-15s %d" % ["Skin", net["profile"].skin])
-          @shell.puts("  %-15s %d" % ["Level", @game.getLevelByExp(net["profile"].experience)])
-          @shell.puts("  %-15s %d" % ["Tutorial", net["tutorial"]])
+          @shell.custom_puts("\e[1;35m\u2022 Profile\e[0m")
+          @shell.custom_puts("  %-15s %d" % ["ID", net["profile"].id])
+          @shell.custom_puts("  %-15s %s" % ["Name", net["profile"].name])
+          @shell.custom_puts("  %-15s \e[33m$ %d\e[0m" % ["Money", net["profile"].money])
+          @shell.custom_puts("  %-15s \e[31m\u20bf %d\e[0m" % ["Bitcoins", net["profile"].bitcoins])
+          @shell.custom_puts("  %-15s %d" % ["Credits", net["profile"].credits])
+          @shell.custom_puts("  %-15s %d" % ["Experience", net["profile"].experience])
+          @shell.custom_puts("  %-15s %d" % ["Rank", net["profile"].rank])
+          @shell.custom_puts("  %-15s %s" % ["Builders", "\e[32m" + "\u25b0" * builders + "\e[37m" + "\u25b1" * (net["profile"].builders - builders) + "\e[0m"])
+          @shell.custom_puts("  %-15s %d" % ["X", net["profile"].x])
+          @shell.custom_puts("  %-15s %d" % ["Y", net["profile"].y])
+          @shell.custom_puts("  %-15s %d" % ["Country", net["profile"].country])
+          @shell.custom_puts("  %-15s %d" % ["Skin", net["profile"].skin])
+          @shell.custom_puts("  %-15s %d" % ["Level", @game.getLevelByExp(net["profile"].experience)])
+          @shell.custom_puts("  %-15s %d" % ["Tutorial", net["tutorial"]])
           unless net["shield"]["type"].zero?
-            @shell.puts("  %-15s %s (%d)" % ["Shield", @game.shieldTypes[net["shield"]["type"]]["name"], net["shield"]["timer"]])
+            @shell.custom_puts("  %-15s %s (%d)" % ["Shield", @game.shieldTypes[net["shield"]["type"]]["name"], net["shield"]["timer"]])
           end
-          @shell.puts("  Skins:") unless net["skins"].empty?
+          @shell.custom_puts("  Skins:") unless net["skins"].empty?
           net["skins"].each do |skin|
-            @shell.puts("   %-3d %-15s" % [skin, @game.skinTypes[skin]["name"]])
+            @shell.custom_puts("   %-3d %-15s" % [skin, @game.skinTypes[skin]["name"]])
           end
           return
 
         when "readme"
-          @shell.puts("\e[1;35m\u2022 Readme\e[0m")
+          @shell.custom_puts("\e[1;35m\u2022 Readme\e[0m")
           net["readme"].each_with_index do |message, i|
-            @shell.puts("  [#{i}] #{message}")
+            @shell.custom_puts("  [#{i}] #{message}")
           end
           return
 
         when "write"
           if words[1].nil?
-            @shell.puts("#{cmd}: Specify message")
+            @shell.custom_puts("#{cmd}: Specify message")
             return
           end
 
           if @game.sid.empty?
-            @shell.puts("#{cmd}: No session ID")
+            @shell.custom_puts("#{cmd}: No session ID")
             return
           end
 
@@ -100,26 +100,26 @@ module Sandbox
           end
 
           @shell.logger.log(msg)
-          @shell.puts("\e[1;35m\u2022 Readme\e[0m")
+          @shell.custom_puts("\e[1;35m\u2022 Readme\e[0m")
           net["readme"].each_with_index do |message, i|
-            @shell.puts("  [#{i}] #{message}")
+            @shell.custom_puts("  [#{i}] #{message}")
           end
           return
 
         when "remove"
           if words[1].nil?
-            @shell.puts("#{cmd}: Specify message ID")
+            @shell.custom_puts("#{cmd}: Specify message ID")
             return
           end
 
           id = words[1].to_i
           if net["readme"].id?(id)
-            @shell.puts("#{cmd}: No such message ID")
+            @shell.custom_puts("#{cmd}: No such message ID")
             return
           end
 
           if @game.sid.empty?
-            @shell.puts("#{cmd}: No session ID")
+            @shell.custom_puts("#{cmd}: No session ID")
             return
           end
 
@@ -133,15 +133,15 @@ module Sandbox
           end
 
           @shell.logger.log(msg)
-          @shell.puts("\e[1;35m\u2022 Readme\e[0m")
+          @shell.custom_puts("\e[1;35m\u2022 Readme\e[0m")
           net["readme"].each_with_index do |message, i|
-            @shell.puts("  [#{i}] #{message}")
+            @shell.custom_puts("  [#{i}] #{message}")
           end
           return
 
         when "nodes"
-          @shell.puts("\e[1;35m\u2022 Nodes\e[0m")
-          @shell.puts(
+          @shell.custom_puts("\e[1;35m\u2022 Nodes\e[0m")
+          @shell.custom_puts(
             "  \e[35m%-12s %-12s %-4s %-5s %-16s\e[0m" % [
               "ID",
               "Name",
@@ -172,7 +172,7 @@ module Sandbox
                 timer += "\e[0m"
               end
             end
-            @shell.puts(
+            @shell.custom_puts(
               "  %-12d %-12s %-4d %-5d %-17s" % [
                 k,
                 @game.nodeTypes[v["type"]]["name"],
@@ -185,8 +185,8 @@ module Sandbox
           return
 
         when "logs"
-          @shell.puts("\e[1;35m\u2022 Security\e[0m")
-          @shell.puts(
+          @shell.custom_puts("\e[1;35m\u2022 Security\e[0m")
+          @shell.custom_puts(
             "  \e[35m%-7s %-10s %-19s %-10s %-5s %s\e[0m" % [
               "",
               "ID",
@@ -201,7 +201,7 @@ module Sandbox
           end
           logsSecurity = logsSecurity.to_a.reverse.to_h
           logsSecurity.each do |k, v|
-            @shell.puts(
+            @shell.custom_puts(
               "  %s%s%s %+-3d %-10s %-19s %-10s %-5d %s" % [
                 v["success"] & Trickster::Hackers::Game::SUCCESS_CORE == 0 ? "\u25b3" : "\e[32m\u25b2\e[0m",
                 v["success"] & Trickster::Hackers::Game::SUCCESS_RESOURCES == 0 ? "\u25b3" : "\e[32m\u25b2\e[0m",
@@ -216,9 +216,9 @@ module Sandbox
             )
           end          
 
-          @shell.puts
-          @shell.puts("\e[1;35m\u2022 Hacks\e[0m")
-          @shell.puts(
+          @shell.custom_puts
+          @shell.custom_puts("\e[1;35m\u2022 Hacks\e[0m")
+          @shell.custom_puts(
             "  \e[35m%-7s %-10s %-19s %-10s %-5s %s\e[0m" % [
               "",
               "ID",
@@ -233,7 +233,7 @@ module Sandbox
           end
           logsHacks = logsHacks.to_a.reverse.to_h
           logsHacks.each do |k, v|
-            @shell.puts(
+            @shell.custom_puts(
               "  %s%s%s %+-3d %-10s %-19s %-10s %-5d %s" % [
                 v["success"] & Trickster::Hackers::Game::SUCCESS_CORE == 0 ? "\u25b3" : "\e[32m\u25b2\e[0m",
                 v["success"] & Trickster::Hackers::Game::SUCCESS_RESOURCES == 0 ? "\u25b3" : "\e[32m\u25b2\e[0m",
@@ -250,8 +250,8 @@ module Sandbox
           return
 
         when "net"
-          @shell.puts("\e[1;35m\u2022 Network structure\e[0m")
-          @shell.puts(
+          @shell.custom_puts("\e[1;35m\u2022 Network structure\e[0m")
+          @shell.custom_puts(
             "  \e[35m%-5s %-12s %-12s %-5s %-4s %-4s %-4s %s\e[0m" % [
               "Index",
               "ID",
@@ -266,7 +266,7 @@ module Sandbox
           net["net"].each_index do |i|
             id = net["net"][i]["id"]
             type = net["nodes"][id]["type"]
-            @shell.puts(
+            @shell.custom_puts(
               "  %-5d %-12d %-12s %-5d %-+4d %-+4d %-+4d %s" % [
                 i,
                 id,
@@ -286,7 +286,7 @@ module Sandbox
 
       when "clear"
         if @game.sid.empty?
-          @shell.puts("#{cmd}: No session ID")
+          @shell.custom_puts("#{cmd}: No session ID")
           return
         end
 
@@ -303,13 +303,13 @@ module Sandbox
 
       when "create"
         if words[1].nil?
-          @shell.puts("#{cmd}: Specify node type")
+          @shell.custom_puts("#{cmd}: Specify node type")
           return
         end
         type = words[1].to_i
         
         if @game.sid.empty?
-          @shell.puts("#{cmd}: No session ID")
+          @shell.custom_puts("#{cmd}: No session ID")
           return
         end
 
@@ -326,13 +326,13 @@ module Sandbox
 
       when "delete"
         if words[1].nil?
-          @shell.puts("#{cmd}: Specify node ID")
+          @shell.custom_puts("#{cmd}: Specify node ID")
           return
         end
         id = words[1].to_i
         
         if @game.sid.empty?
-          @shell.puts("#{cmd}: No session ID")
+          @shell.custom_puts("#{cmd}: No session ID")
           return
         end
 
@@ -349,13 +349,13 @@ module Sandbox
 
       when "upgrade"
         if words[1].nil?
-          @shell.puts("#{cmd}: Specify node ID")
+          @shell.custom_puts("#{cmd}: Specify node ID")
           return
         end
         id = words[1].to_i
         
         if @game.sid.empty?
-          @shell.puts("#{cmd}: No session ID")
+          @shell.custom_puts("#{cmd}: No session ID")
           return
         end
 
@@ -371,13 +371,13 @@ module Sandbox
 
       when "finish"
         if words[1].nil?
-          @shell.puts("#{cmd}: Specify node ID")
+          @shell.custom_puts("#{cmd}: Specify node ID")
           return
         end
         id = words[1].to_i
         
         if @game.sid.empty?
-          @shell.puts("#{cmd}: No session ID")
+          @shell.custom_puts("#{cmd}: No session ID")
           return
         end
 
@@ -393,13 +393,13 @@ module Sandbox
 
       when "cancel"
         if words[1].nil?
-          @shell.puts("#{cmd}: Specify node ID")
+          @shell.custom_puts("#{cmd}: Specify node ID")
           return
         end
         id = words[1].to_i
 
         if @game.sid.empty?
-          @shell.puts("#{cmd}: No session ID")
+          @shell.custom_puts("#{cmd}: No session ID")
           return
         end
 
@@ -415,19 +415,19 @@ module Sandbox
 
       when "builders"
         if words[1].nil?
-          @shell.puts("#{cmd}: Specify node ID")
+          @shell.custom_puts("#{cmd}: Specify node ID")
           return
         end
         id = words[1].to_i
 
         if words[2].nil?
-          @shell.puts("#{cmd}: Specify number of builders")
+          @shell.custom_puts("#{cmd}: Specify number of builders")
           return
         end
         builders = words[2].to_i
 
         if @game.sid.empty?
-          @shell.puts("#{cmd}: No session ID")
+          @shell.custom_puts("#{cmd}: No session ID")
           return
         end
 
@@ -443,7 +443,7 @@ module Sandbox
 
       when "collect"
         if @game.sid.empty?
-          @shell.puts("#{cmd}: No session ID")
+          @shell.custom_puts("#{cmd}: No session ID")
           return
         end
 

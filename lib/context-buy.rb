@@ -18,13 +18,13 @@ module Sandbox
 
       when "skin"
         if @game.sid.empty?
-          @shell.puts("#{cmd}: No session ID")
+          @shell.custom_puts("#{cmd}: No session ID")
           return
         end
 
         skin = words[1]
         if skin.nil?
-          @shell.puts("#{cmd}: Specify skin type")
+          @shell.custom_puts("#{cmd}: Specify skin type")
           return
         end
 
@@ -40,13 +40,13 @@ module Sandbox
 
       when "shield"
         if @game.sid.empty?
-          @shell.puts("#{cmd}: No session ID")
+          @shell.custom_puts("#{cmd}: No session ID")
           return
         end
 
         shield = words[1]
         if shield.nil?
-          @shell.puts("#{cmd}: Specify shield type")
+          @shell.custom_puts("#{cmd}: Specify shield type")
           return
         end
 
@@ -62,7 +62,7 @@ module Sandbox
 
       when "builder"
         if @game.sid.empty?
-          @shell.puts("#{cmd}: No session ID")
+          @shell.custom_puts("#{cmd}: No session ID")
           return
         end
 
@@ -78,13 +78,13 @@ module Sandbox
 
       when "money", "bitcoins"
         if @game.sid.empty?
-          @shell.puts("#{cmd}: No session ID")
+          @shell.custom_puts("#{cmd}: No session ID")
           return
         end
 
         perc = words[1]
         if perc.nil?
-          @shell.puts("#{cmd}: Specify currency percentage")
+          @shell.custom_puts("#{cmd}: Specify currency percentage")
           return
         end
 

@@ -18,28 +18,28 @@ class Replayinfo < Sandbox::Script
       return
     end
 
-    @shell.puts("Replay info: #{id}")
-    @shell.puts(" %-15s %s" % ["Datetime", info["datetime"]])
-    @shell.puts(" %-15s %s%s%s" % [
+    @shell.custom_puts("Replay info: #{id}")
+    @shell.custom_puts(" %-15s %s" % ["Datetime", info["datetime"]])
+    @shell.custom_puts(" %-15s %s%s%s" % [
       "Success",
       info["success"] & Trickster::Hackers::Game::SUCCESS_CORE == 0 ? "\u25b3" : "\e[32m\u25b2\e[0m",
       info["success"] & Trickster::Hackers::Game::SUCCESS_RESOURCES == 0 ? "\u25b3" : "\e[32m\u25b2\e[0m",
       info["success"] & Trickster::Hackers::Game::SUCCESS_CONTROL == 0 ? "\u25b3" : "\e[32m\u25b2\e[0m",
     ])
-    @shell.puts(" %-15s %+d" % ["Rank", info["rank"]])
-    @shell.puts(" %-15s %d" % ["Money", info["money"]])
-    @shell.puts(" %-15s %d" % ["Bitcoins", info["bitcoins"]])
-    @shell.puts(" %-15s %s" % ["Test", info["test"]])
-    @shell.puts(" Attacker:")
-    @shell.puts("  %-15s %d" % ["ID", info["attacker"]["id"]])
-    @shell.puts("  %-15s %s" % ["Name", info["attacker"]["name"]])
-    @shell.puts("  %-15s %d (%s)" % ["Country", info["attacker"]["country"], @game.getCountryNameByID(info["attacker"]["country"])])
-    @shell.puts("  %-15s %d" % ["Level", info["attacker"]["level"]])
-    @shell.puts(" Target:")
-    @shell.puts("  %-15s %d" % ["ID", info["target"]["id"]])
-    @shell.puts("  %-15s %s" % ["Name", info["target"]["name"]])
-    @shell.puts("  %-15s %d (%s)" % ["Country", info["target"]["country"], @game.getCountryNameByID(info["target"]["country"])])
-    @shell.puts("  %-15s %d" % ["Level", info["target"]["level"]])
+    @shell.custom_puts(" %-15s %+d" % ["Rank", info["rank"]])
+    @shell.custom_puts(" %-15s %d" % ["Money", info["money"]])
+    @shell.custom_puts(" %-15s %d" % ["Bitcoins", info["bitcoins"]])
+    @shell.custom_puts(" %-15s %s" % ["Test", info["test"]])
+    @shell.custom_puts(" Attacker:")
+    @shell.custom_puts("  %-15s %d" % ["ID", info["attacker"]["id"]])
+    @shell.custom_puts("  %-15s %s" % ["Name", info["attacker"]["name"]])
+    @shell.custom_puts("  %-15s %d (%s)" % ["Country", info["attacker"]["country"], @game.getCountryNameByID(info["attacker"]["country"])])
+    @shell.custom_puts("  %-15s %d" % ["Level", info["attacker"]["level"]])
+    @shell.custom_puts(" Target:")
+    @shell.custom_puts("  %-15s %d" % ["ID", info["target"]["id"]])
+    @shell.custom_puts("  %-15s %s" % ["Name", info["target"]["name"]])
+    @shell.custom_puts("  %-15s %d (%s)" % ["Country", info["target"]["country"], @game.getCountryNameByID(info["target"]["country"])])
+    @shell.custom_puts("  %-15s %d" % ["Level", info["target"]["level"]])
   end
 end
 

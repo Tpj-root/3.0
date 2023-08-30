@@ -16,7 +16,7 @@ module Sandbox
 
       when "list"
         if @game.sid.empty?
-          @shell.puts("#{cmd}: No session ID")
+          @shell.custom_puts("#{cmd}: No session ID")
           return
         end
 
@@ -29,8 +29,8 @@ module Sandbox
         end
         @shell.logger.log(msg)
 
-        @shell.puts("\e[1;35m\u2022 Missions log\e[0m")
-        @shell.puts(
+        @shell.custom_puts("\e[1;35m\u2022 Missions log\e[0m")
+        @shell.custom_puts(
           "  \e[35m%-1s %-7s %-7s %-8s %-20s\e[0m" % [
             "",
             "ID",
@@ -49,7 +49,7 @@ module Sandbox
             when Trickster::Hackers::Game::MISSION_REJECTED
              status = "\e[31m\u2691\e[0m"
           end
-          @shell.puts(
+          @shell.custom_puts(
             "  %-1s %-7d %-7d %-8d %-20s" % [
               status,
               k,
@@ -63,17 +63,17 @@ module Sandbox
 
       when "start"
         if @game.sid.empty?
-          @shell.puts("#{cmd}: No session ID")
+          @shell.custom_puts("#{cmd}: No session ID")
           return
         end
 
         if words[1].nil?
-          @shell.puts("#{cmd}: Specify mission ID")
+          @shell.custom_puts("#{cmd}: Specify mission ID")
           return
         end
         id = words[1].to_i
         unless @game.missionsList.key?(id)
-          @shell.puts("#{cmd}: No such mission")
+          @shell.custom_puts("#{cmd}: No such mission")
           return
         end
 
@@ -89,17 +89,17 @@ module Sandbox
 
       when "reject"
         if @game.sid.empty?
-          @shell.puts("#{cmd}: No session ID")
+          @shell.custom_puts("#{cmd}: No session ID")
           return
         end
 
         if words[1].nil?
-          @shell.puts("#{cmd}: Specify mission ID")
+          @shell.custom_puts("#{cmd}: Specify mission ID")
           return
         end
         id = words[1].to_i
         unless @game.missionsList.key?(id)
-          @shell.puts("#{cmd}: No such mission")
+          @shell.custom_puts("#{cmd}: No such mission")
           return
         end
 

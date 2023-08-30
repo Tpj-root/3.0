@@ -31,18 +31,18 @@ module Sandbox
 
       when "open"
         if @game.sid.empty? || @game.appSettings.empty?
-          @shell.puts "#{cmd}: Not connected"
+          @shell.custom_puts "#{cmd}: Not connected"
           return
         end
 
         if words[1].nil?
-          @shell.puts "#{cmd}: Specify room ID"
+          @shell.custom_puts "#{cmd}: Specify room ID"
           return
         end
 
         room = words[1].to_i
         if @rooms.key?(room)
-          @shell.puts("#{cmd}: Room #{room} already opened")
+          @shell.custom_puts("#{cmd}: Room #{room} already opened")
           return
         end
         
@@ -54,25 +54,25 @@ module Sandbox
 
       when "list"
         if @rooms.empty?
-          @shell.puts "#{cmd}: No opened rooms"
+          @shell.custom_puts "#{cmd}: No opened rooms"
           return
         end
         
-        @shell.puts "Opened rooms:"
+        @shell.custom_puts "Opened rooms:"
         @rooms.each_key do |k|
-          @shell.puts " \e[1;33m\u2022\e[0m %-4d (%s)" % [k, @game.countriesList.fetch(k.to_s, "Unknown")]
+          @shell.custom_puts " \e[1;33m\u2022\e[0m %-4d (%s)" % [k, @game.countriesList.fetch(k.to_s, "Unknown")]
         end
         return
         
       when "close"
         if words[1].nil?
-          @shell.puts "#{cmd}: Specify room ID"
+          @shell.custom_puts "#{cmd}: Specify room ID"
           return
         end
 
         room = words[1].to_i
         unless @rooms.key?(room)
-          @shell.puts "#{cmd}: No such opened room"
+          @shell.custom_puts "#{cmd}: No such opened room"
           return
         end
 
@@ -82,18 +82,18 @@ module Sandbox
 
       when "say"
         if words[1].nil?
-          @shell.puts "#{cmd}: Specify room ID"
+          @shell.custom_puts "#{cmd}: Specify room ID"
           return
         end
 
         room = words[1].to_i
         if words[2].nil?
-          @shell.puts "#{cmd}: Specify message"
+          @shell.custom_puts "#{cmd}: Specify message"
           return
         end
 
         unless @rooms.key?(room)
-          @shell.puts("#{cmd}: No such opened room")
+          @shell.custom_puts("#{cmd}: No such opened room")
           return
         end
 
@@ -109,17 +109,17 @@ module Sandbox
 
       when "talk"
         if words[1].nil?
-          @shell.puts("#{cmd}: Specify room ID")
+          @shell.custom_puts("#{cmd}: Specify room ID")
           return
         end
 
         room = words[1].to_i
         unless @rooms.key?(room)
-          @shell.puts("#{cmd}: No such opened room")
+          @shell.custom_puts("#{cmd}: No such opened room")
           return
         end
 
-        @shell.puts("Enter ! to quit")
+        @shell.custom_puts("Enter ! to quit")
         loop do
           @shell.reading = true
           message = Readline.readline("#{room} \e[1;33m\u2765\e[0m ", true)
@@ -142,12 +142,12 @@ module Sandbox
         
     when "users"
       if @game.sid.empty? || @game.appSettings.empty?
-        @shell.puts "#{cmd}: Not connected"
+        @shell.custom_puts "#{cmd}: Not connected"
         return
       end
 
       if words[1].nil?
-        @shell.puts("#{cmd}: Specify room ID")
+        @shell.custom_puts("#{cmd}: Specify room ID")
         return
       end
       room = words[1].to_i
@@ -161,14 +161,14 @@ module Sandbox
       end
 
       if messages.empty?
-        @shell.puts "No users in room #{room}"
+        @shell.custom_puts "No users in room #{room}"
         return
       end
 
       messages.uniq! {|m| m.id}
-      @shell.puts "Users in room %d (%s)" % [room, @game.countriesList.fetch(room.to_s, "Unknown")]
+      @shell.custom_puts "Users in room %d (%s)" % [room, @game.countriesList.fetch(room.to_s, "Unknown")]
       messages.each do |message|
-        @shell.puts " %-30s .. %d" % [message.nick, message.id]
+        @shell.custom_puts " %-30s .. %d" % [message.nick, message.id]
       end
       return
 
@@ -179,7 +179,7 @@ module Sandbox
 
     def log(room, messages)
       messages.each do |message|
-        @shell.puts(
+        @shell.custom_puts(
           "\e[1;33m\u2764 \e[22;34m[%s:%d] \e[22;31m%d \e[1;35m%s \e[22;33m%s\e[0m" % [
             @game.countriesList.fetch(room.to_s, "Unknown"),
             room,

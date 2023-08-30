@@ -18,11 +18,11 @@ class Logs < Sandbox::Script
       return
     end
 
-    @shell.puts("Logs for #{id}")
-    @shell.puts
+    @shell.custom_puts("Logs for #{id}")
+    @shell.custom_puts
 
-    @shell.puts("\u2022 Security")
-    @shell.puts(
+    @shell.custom_puts("\u2022 Security")
+    @shell.custom_puts(
       "  %-7s %-10s %-19s %-10s %-5s %s" % [
         "",
         "ID",
@@ -37,7 +37,7 @@ class Logs < Sandbox::Script
     end
     security = security.to_a.reverse.to_h
     security.each do |k, v|
-      @shell.puts(
+      @shell.custom_puts(
         "  %s%s%s %+-3d %-10s %-19s %-10s %-5d %s" % [
           v["success"] & Trickster::Hackers::Game::SUCCESS_CORE == 0 ? "\u25b3" : "\e[32m\u25b2\e[0m",
           v["success"] & Trickster::Hackers::Game::SUCCESS_RESOURCES == 0 ? "\u25b3" : "\e[32m\u25b2\e[0m",
@@ -52,9 +52,9 @@ class Logs < Sandbox::Script
       )
     end          
 
-    @shell.puts
-    @shell.puts("\u2022 Hacks")
-    @shell.puts(
+    @shell.custom_puts
+    @shell.custom_puts("\u2022 Hacks")
+    @shell.custom_puts(
       "  %-7s %-10s %-19s %-10s %-5s %s" % [
         "",
         "ID",
@@ -69,7 +69,7 @@ class Logs < Sandbox::Script
     end
     hacks = hacks.to_a.reverse.to_h
     hacks.each do |k, v|
-      @shell.puts(
+      @shell.custom_puts(
         "  %s%s%s %+-3d %-10s %-19s %-10s %-5d %s" % [
           v["success"] & Trickster::Hackers::Game::SUCCESS_CORE == 0 ? "\u25b3" : "\e[32m\u25b2\e[0m",
           v["success"] & Trickster::Hackers::Game::SUCCESS_RESOURCES == 0 ? "\u25b3" : "\e[32m\u25b2\e[0m",

@@ -37,7 +37,7 @@ module Sandbox
         
         uri = @game.client.encodeURI(data)
         if cmd == "qs" && @game.sid.empty?
-          @shell.puts "#{cmd}: No session ID"
+          @shell.custom_puts "#{cmd}: No session ID"
           return
         end
 
@@ -51,7 +51,7 @@ module Sandbox
         end
 
         @shell.logger.log(msg)
-        @shell.puts("\e[22;35m#{response}\e[0m")
+        @shell.custom_puts("\e[22;35m#{response}\e[0m")
         @dumps.append({
                         "name" => "Dump#{@dumps.length}",
                         "note" => "",
@@ -63,13 +63,13 @@ module Sandbox
 
       when "dumps"
         if @dumps.empty?
-          @shell.puts("#{cmd}: No dumps")
+          @shell.custom_puts("#{cmd}: No dumps")
           return
         end
 
-        @shell.puts("Dumps:")
+        @shell.custom_puts("Dumps:")
         @dumps.each_index do |i|
-          @shell.puts(
+          @shell.custom_puts(
             "[%d] %s: %s" % [
               i, @dumps[i]["datetime"], @dumps[i]["name"]
             ]
@@ -79,13 +79,13 @@ module Sandbox
 
       when "show"
         if words[1].nil?
-          @shell.puts("#{cmd}: Specify dump ID")
+          @shell.custom_puts("#{cmd}: Specify dump ID")
           return
         end
         
         id = words[1].to_i
         if @dumps[id].nil?
-          @shell.puts("#{cmd}: No such dump")
+          @shell.custom_puts("#{cmd}: No such dump")
           return
         end
 
@@ -95,19 +95,19 @@ module Sandbox
           else
             val = v
           end
-          @shell.puts("\e[1;32m#{k.capitalize}: \e[22;36m#{val}\e[0m")
+          @shell.custom_puts("\e[1;32m#{k.capitalize}: \e[22;36m#{val}\e[0m")
         end
         return
 
       when "del"
         if words[1].nil?
-          @shell.puts("#{cmd}: Specify dump ID")
+          @shell.custom_puts("#{cmd}: Specify dump ID")
           return
         end
         
         id = words[1].to_i
         if @dumps[id].nil?
-          @shell.puts("#{cmd}: No such dump")
+          @shell.custom_puts("#{cmd}: No such dump")
           return
         end
 
@@ -116,19 +116,19 @@ module Sandbox
 
       when "rename"
         if words[1].nil?
-          @shell.puts("#{cmd}: Specify dump ID")
+          @shell.custom_puts("#{cmd}: Specify dump ID")
           return
         end
         
         id = words[1].to_i
         if @dumps[id].nil?
-          @shell.puts("#{cmd}: No such dump")
+          @shell.custom_puts("#{cmd}: No such dump")
           return
         end
 
         name = words[2..-1].join(" ")
         if name.nil? || name.empty?
-          @shell.puts("#{cmd}: Specify dump name")
+          @shell.custom_puts("#{cmd}: Specify dump name")
           return
         end
 
@@ -137,19 +137,19 @@ module Sandbox
 
       when "note"
         if words[1].nil?
-          @shell.puts("#{cmd}: Specify dump ID")
+          @shell.custom_puts("#{cmd}: Specify dump ID")
           return
         end
         
         id = words[1].to_i
         if @dumps[id].nil?
-          @shell.puts("#{cmd}: No such dump")
+          @shell.custom_puts("#{cmd}: No such dump")
           return
         end
 
         note = words[2..-1].join(" ")
         if note.nil? || note.empty?
-          @shell.puts("#{cmd}: Specify dump note")
+          @shell.custom_puts("#{cmd}: Specify dump note")
           return
         end
 
@@ -165,25 +165,25 @@ module Sandbox
         end
 
         if files.empty?
-          @shell.puts("#{cmd}: No dump files")
+          @shell.custom_puts("#{cmd}: No dump files")
           return
         end
 
-        @shell.puts("Dump files:")
+        @shell.custom_puts("Dump files:")
         files.each do |file|
-          @shell.puts(" #{file}")
+          @shell.custom_puts(" #{file}")
         end
         return
         
       when "export"
         file = words[1]
         if file.nil?
-          @shell.puts("#{cmd}: Specify file name")
+          @shell.custom_puts("#{cmd}: Specify file name")
           return
         end
 
         if @dumps.empty?
-          @shell.puts("#{cmd}: No dumps")
+          @shell.custom_puts("#{cmd}: No dumps")
           return
         end
         
@@ -193,13 +193,13 @@ module Sandbox
       when "import"
         file = words[1]
         if file.nil?
-          @shell.puts("#{cmd}: Specify file name")
+          @shell.custom_puts("#{cmd}: Specify file name")
           return
         end
 
         fname = "#{DUMPS_DIR}/#{file}.dump"
         unless File.exists?(fname)
-          @shell.puts("#{cmd}: No such file")
+          @shell.custom_puts("#{cmd}: No such file")
           return
         end
 
@@ -207,22 +207,22 @@ module Sandbox
         begin
           @dumps = JSON::parse(dump)
         rescue JSON::ParserError => e
-          @shell.puts("#{cmd}: Invalid dump format")
-          @shell.puts
-          @shell.puts(e)
+          @shell.custom_puts("#{cmd}: Invalid dump format")
+          @shell.custom_puts
+          @shell.custom_puts(e)
         end
         return
 
       when "rm"
         file = words[1]
         if file.nil?
-          @shell.puts("#{cmd}: Specify file name")
+          @shell.custom_puts("#{cmd}: Specify file name")
           return
         end
 
         fname = "#{DUMPS_DIR}/#{file}.dump"
         unless File.exists?(fname)
-          @shell.puts("#{cmd}: No such file")
+          @shell.custom_puts("#{cmd}: No such file")
           return
         end
 
