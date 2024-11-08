@@ -4,7 +4,6 @@ module Trickster
     require "hackers-serializer"
     require "hackers-objects"
     require "hackers-link"
-    require "pry"
 
     ##
     # Game API implementation
@@ -109,9 +108,7 @@ module Trickster
           "app_version"                     => @config["version"],
         }
         response = @client.request(params, @sid, true, false)
-        puts "response output is: " + response
         serializer = Serializer.new(response)
-        binding.pry
         return serializer.parseTransLang(0)
       end
       
@@ -125,7 +122,6 @@ module Trickster
           "app_version"           => @config["version"],
         }
         response = @client.request(params, @sid, true, false)
-        puts "response cmdAppSettings output is: " + response
         serializer = Serializer.new(response)
         return serializer.parseAppSettings(0)
       end

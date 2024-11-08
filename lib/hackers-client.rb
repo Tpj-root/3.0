@@ -83,7 +83,6 @@ module Trickster
         request = @uri + "?" + uri
         request += "&session_id=" + sid if session
         request += "&cmd_id=" + hashURI(request) if cmd
-        puts "this perfect urlgen : " + request
         return request
       end
 
