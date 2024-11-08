@@ -104,9 +104,7 @@ module Trickster
         }
         
         # Ensure the URI is properly constructed
-        uri = URI.encode_www_form(params)
-        puts "this perfect uri : " + uri
-      
+        uri = URI.encode_www_form(params)      
         response = nil
         client, mutex = @clients.detect { |k, v| !v.locked? }
         
