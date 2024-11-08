@@ -3,6 +3,10 @@ module Trickster
     require "net/http"
     require "digest"
     require "base64"
+    require 'net/http'
+    require 'uri'
+    require 'zlib'
+    require 'stringio'
 
     ##
     # An exception raises when the request fails
@@ -79,6 +83,7 @@ module Trickster
         request = @uri + "?" + uri
         request += "&session_id=" + sid if session
         request += "&cmd_id=" + hashURI(request) if cmd
+        puts "this perfect urlgen : " + request
         return request
       end
 
@@ -98,39 +103,55 @@ module Trickster
           "Accept-Encoding" => "gzip, identity",
           "User-Agent"      => "BestHTTP/2 v2.2.0",
         }
+        
+        # Ensure the URI is properly constructed
         uri = URI.encode_www_form(params)
-
+        puts "this perfect uri : " + uri
+      
         response = nil
-        client, mutex = @clients.detect {|k, v| !v.locked?}
+        client, mutex = @clients.detect { |k, v| !v.locked? }
+        
         if client.nil?
           client, mutex = @clients.to_a.first
         end
+      
         mutex.synchronize do
+          # Perform GET or POST request based on data
           if data.empty?
-            response = client.get(
-              makeURI(uri, sid, cmd, session),
-              header,
-            )
+            response = client.get(makeURI(uri, sid, cmd, session), header)
           else
-            response = client.post(
-              makeURI(uri, sid, cmd, session),
-              URI.encode_www_form(data),
-              header,
-            )
+            response = client.post(makeURI(uri, sid, cmd, session), URI.encode_www_form(data), header)
           end
         rescue => e
           raise RequestError.new(e.class.to_s, e.message)
         end
-
+      
+        # Check if response is successful (HTTP 200 OK)
         if response.class != Net::HTTPOK
-          fields = Serializer.parseData(response.body.force_encoding("utf-8"))
+          fields = Serializer.parseData(response.body)
           raise RequestError.new(
             Serializer.normalizeData(fields.dig(0, 0, 0)),
             Serializer.normalizeData(fields.dig(0, 0, 1))
           )
         end
-        return response.body.force_encoding("utf-8")
+      
+        # Handling potential gzip encoding in the response
+        body = response.body
+        if response['Content-Encoding'] == 'gzip'
+          gzipped = StringIO.new(body)
+          gz = Zlib::GzipReader.new(gzipped)
+          body = gz.read
+        end
+      
+        # Ensure the response body is in utf-8 encoding
+        body.force_encoding('utf-8')
+      
+        return body
+      rescue StandardError => e
+        # Handle any other exceptions and errors
+        raise "Request failed: #{e.message}"
       end
+
 
       ##
       # Private methods
