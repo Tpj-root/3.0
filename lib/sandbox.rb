@@ -69,10 +69,29 @@ module Sandbox
         puts(data)
       else
         # Unix-like platform
-        $stdout.puts("\e[0G\e[J#{data}".colorize(:default))
-        Readline.refresh_line if @reading
+        $stdout.puts("\e[0G\e[J#{data}")
+#1.0
+#        $stdout.puts("\e[0G\e[J#{data}".colorize(:default))
+#        Readline.refresh_line if @reading
+#
+#
+#2.0 try 
+#        puts("\e[0G\e[J#{data}")
+#        Readline.refresh_line if defined? Readline.refresh_line && @reading
+#3.0 work perfect in all unix
+        # Unix-like platform
+        #puts("\e[0G\e[J#{data}")
+        begin
+            Readline.refresh_line if defined?(Readline.refresh_line) && @reading
+        rescue NotImplementedError
+        # Handle the case where refresh_line is not implemented
+        #puts("\e[0G\e[J#{data}")
+        end
+##########
       end
     end
+    
+
 #######################################
     def readline
       loop do
