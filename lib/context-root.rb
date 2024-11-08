@@ -841,7 +841,7 @@ module Sandbox
           @shell.custom_puts("#{cmd}: No session ID")
           return
         end
-
+      
         msg = "Player stats"
         begin
           stats = @game.cmdPlayerGetStats
@@ -850,25 +850,38 @@ module Sandbox
           return
         end
         @shell.logger.log(msg)
-
+      
         @shell.custom_puts("\e[1;35m\u2022 Player statistics\e[0m")
         @shell.custom_puts("  Rank: #{stats["rank"]}")
         @shell.custom_puts("  Experience: #{stats["experience"]}")
         @shell.custom_puts("  Level: #{@game.getLevelByExp(stats["experience"])}")
+        
+        # Hacks stats and win rate calculation
+        total_hacks = stats["hacks"]["success"] + stats["hacks"]["fail"]
+        hack_win_rate = total_hacks > 0 ? (stats["hacks"]["success"].to_f / total_hacks * 100).to_i : 0
         @shell.custom_puts("  Hacks:")
         @shell.custom_puts("   Successful: #{stats["hacks"]["success"]}")
         @shell.custom_puts("   Failed: #{stats["hacks"]["fail"]}")
-        @shell.custom_puts("   Win rate: #{(stats["hacks"]["success"].to_f / (stats["hacks"]["success"] + stats["hacks"]["fail"]) * 100).to_i}%")
+        @shell.custom_puts("   Win rate: #{hack_win_rate}%")
+        
+        # Defenses stats and win rate calculation
+        total_defenses = stats["defense"]["success"] + stats["defense"]["fail"]
+        defense_win_rate = total_defenses > 0 ? (stats["defense"]["success"].to_f / total_defenses * 100).to_i : 0
         @shell.custom_puts("  Defenses:")
         @shell.custom_puts("   Successful: #{stats["defense"]["success"]}")
         @shell.custom_puts("   Failed: #{stats["defense"]["fail"]}")
-        @shell.custom_puts("   Win rate: #{(stats["defense"]["success"].to_f / (stats["defense"]["success"] + stats["defense"]["fail"]) * 100).to_i}%")
+        @shell.custom_puts("   Win rate: #{defense_win_rate}%")
+      
+        # Looted stats
         @shell.custom_puts("  Looted:")
         @shell.custom_puts("   Money: #{stats["loot"]["money"]}")
         @shell.custom_puts("   Bitcoins: #{stats["loot"]["bitcoins"]}")
+      
+        # Collected stats
         @shell.custom_puts("  Collected:")
         @shell.custom_puts("   Money: #{stats["collect"]["money"]}")
         @shell.custom_puts("   Bitcoins: #{stats["collect"]["bitcoins"]}")
+      
         return
         
       end
