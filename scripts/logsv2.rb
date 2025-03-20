@@ -20,10 +20,16 @@ class Logsv2 < Sandbox::Script
         hacks = logs.select { |_, v| v["attacker"]["id"] == id }
         hacks = hacks.to_a.reverse.to_h
         
+    #    if hacks.any?
+    #      file.puts("#{id}, ✅")
+    #    else
+    #      file.puts("#{id}, ❌")
+    #    end
+    # Check whether the user is Active or Inactive
         if hacks.any?
-          file.puts("#{id}, ✅")
+          file.puts(" ✅")
         else
-          file.puts("#{id}, ❌")
+          file.puts(" ❌")
         end
       end
     end
